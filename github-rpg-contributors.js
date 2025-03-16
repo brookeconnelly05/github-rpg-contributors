@@ -6,6 +6,7 @@ import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
+
 /**
  * `github-rpg-contributors`
  * 
@@ -29,6 +30,7 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
     super();
     this.organization = '';
     this.repo = '';
+    this.limit;
     this.contributors = [];
     this.title = "";
     this.t = this.t || {};
