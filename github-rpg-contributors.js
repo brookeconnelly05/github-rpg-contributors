@@ -17,15 +17,28 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
   static get tag() {
     return "github-rpg-contributors";
   }
+  
+  static properties = {
+    organization: { type: String },
+    repo: { type: String },
+    limit: { type: Number },
+    contributors: { type: Array }
+  };
 
   constructor() {
     super();
+    this.organization = '';
+    this.repo = '';
+    this.limit = 6;
+    this.contributors = [];
     this.title = "";
     this.t = this.t || {};
     this.t = {
       ...this.t,
       title: "Title",
     };
+
+    
     this.registerLocalization({
       context: this,
       localesPath:
@@ -33,6 +46,17 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
         "/../",
       locales: ["ar", "es", "hi", "zh"],
     });
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.fetchContributors();
+  }
+
+  async fetchContributors() {
+    if (!this.organization || !this.repo) return;
+    const response = await fetch(`https://api.github.com/repos/${this.organization}/${this.repo}/contributors`);
+    const data = await response.json();
+    this.contributors = data.slice(0, this.limit);
   }
 
   // Lit reactive properties
@@ -60,6 +84,19 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
       h3 span {
         font-size: var(--github-rpg-contributors-label-font-size, var(--ddd-font-size-s));
       }
+      .wrapper {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+       }
+    .contributors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      }
+    .contributor {
+      text-align: center;
+      cursor: pointer;
+      }
     `];
   }
 
@@ -67,6 +104,17 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
   render() {
     return html`
 <div class="wrapper">
+<a href="https://github.com/${this.organization}/${this.repo}" target="_blank">
+          ${this.organization}/${this.repo}
+        </a>
+      </div>
+      <div class="contributors">
+        ${this.contributors.map(contributor => html`
+          <div class="contributor" @click="${() => window.open(contributor.html_url, '_blank')}">
+            <rpg-character seed="${contributor.login}"></rpg-character>
+            <p>${contributor.login} (${contributor.contributions} contributions)</p>
+          </div>
+        `)}
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
   <slot></slot>
 </div>`;
