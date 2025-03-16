@@ -29,7 +29,6 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
     super();
     this.organization = '';
     this.repo = '';
-    this.limit = 6;
     this.contributors = [];
     this.title = "";
     this.t = this.t || {};
@@ -85,13 +84,12 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
         font-size: var(--github-rpg-contributors-label-font-size, var(--ddd-font-size-s));
       }
       .wrapper {
-      font-size: 1.2rem;
+      font-size: 30px;
       margin-bottom: 1rem;
        }
     .contributors {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
       }
     .contributor {
       text-align: center;
@@ -109,13 +107,13 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
         </a>
       </div>
       <div class="contributors">
+        <p>Contributors: </p>
         ${this.contributors.map(contributor => html`
           <div class="contributor" @click="${() => window.open(contributor.html_url, '_blank')}">
             <rpg-character seed="${contributor.login}"></rpg-character>
             <p>${contributor.login} (${contributor.contributions} contributions)</p>
           </div>
         `)}
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
   <slot></slot>
 </div>`;
   }
