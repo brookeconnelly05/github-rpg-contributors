@@ -79,15 +79,15 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
         font-family: var(--ddd-font-navigation);
       }
       .wrapper {
-        margin: var(--ddd-spacing-2);
-        padding: var(--ddd-spacing-4);
+        margin: var(--ddd-spacing-0);
+        padding: var(--ddd-spacing-0);
       }
       h3 span {
         font-size: var(--github-rpg-contributors-label-font-size, var(--ddd-font-size-s));
       }
       .wrapper {
-      font-size: 30px;
-      margin-bottom: 1rem;
+      font-size: var(--ddd-font-size-3xs);
+
        }
     .contributors {
       display: flex;
@@ -97,6 +97,14 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
       text-align: center;
       cursor: pointer;
       }
+      p{
+        margin: var(--ddd-spacing-2);
+        padding: var(--ddd-spacing-2);
+      }
+      h3{
+        font-size: var(--ddd-font-size-m);
+
+      }
     `];
   }
 
@@ -105,15 +113,14 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
     return html`
 <div class="wrapper">
 <a href="https://github.com/${this.organization}/${this.repo}" target="_blank">
-          ${this.organization}/${this.repo}
+          <h3>Link to Repo: ${this.organization}/${this.repo}</h3>
         </a>
       </div>
       <div class="contributors">
-        <p>Contributors: </p>
         ${this.contributors.map(contributor => html`
           <div class="contributor" @click="${() => window.open(contributor.html_url, '_blank')}">
             <rpg-character seed="${contributor.login}"></rpg-character>
-            <p>${contributor.login} (${contributor.contributions} contributions)</p>
+            <p class="main">${contributor.login}</p> <p>${contributor.contributions} contributions</p>
           </div>
         `)}
   <slot></slot>
