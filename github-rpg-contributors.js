@@ -111,12 +111,14 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-<a href="https://github.com/${this.organization}/${this.repo}" target="_blank">
+    <!-- Code that I had to change bit but was working.  -->
+<!-- <div class="wrapper">
+<a href="https://github.com/${this.organization}/${this.repo}" >
           <h3>Link to Repo: ${this.organization}/${this.repo}</h3>
         </a>
       </div>
       <div class="contributors">
+        
         ${this.contributors.map(contributor => html`
           <div class="contributor" @click="${() => window.open(contributor.html_url, '_blank')}">
             <rpg-character seed="${contributor.login}"></rpg-character>
@@ -124,7 +126,22 @@ export class GithubRpgContributors extends DDDSuper(I18NMixin(LitElement)) {
           </div>
         `)}
   <slot></slot>
-</div>`;
+</div> -->
+<div class="wrapper">
+        <a href="https://github.com/${this.organization}/${this.repo}">
+        <h3>Link to Repo: ${this.organization}/${this.repo}</h3>
+        </a>
+      </div>
+      <div class="contributors">
+        ${this.contributors.map(contributor => html`
+          <a class="contributor" href="${contributor.html_url}">
+            <rpg-character seed="${contributor.login}"></rpg-character>
+            <p class="main">${contributor.login}</p>
+            <p>${contributor.contributions} contributions</p>
+          </a>
+        `)}
+      </div>
+`;
   }
 
   /**
